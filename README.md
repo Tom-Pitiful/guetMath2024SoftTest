@@ -11,6 +11,7 @@
 #### 最速下降法
 ##### 基本思想
 - 最速下降法利用梯度下降法的思想，通过一阶泰勒展开式近似函数，并沿着负梯度方向（即函数下降最快的方向）移动。
+
 $$f(x) \approx f(x_0) + \nabla f(x) (x-x_0)$$
 
 $$d^{(k)} = -\nabla f(x)$$
@@ -18,6 +19,7 @@ $$d^{(k)} = -\nabla f(x)$$
 $$x^{(k+1)} = x^{(k)} + \lambda d^{(k)}$$
 
 - 步长 $\lambda_k$ 的确定通过一维搜索来实现，以确保在负梯度方向上函数值最小化。
+
 $$\arg \min_{\lambda > 0} f \left( x^{(k)} + \lambda d^{(k)} \right)$$
 
 ##### 算法步骤
@@ -29,8 +31,10 @@ $$\arg \min_{\lambda > 0} f \left( x^{(k)} + \lambda d^{(k)} \right)$$
      $$d^k = -\nabla f(x^k)$$
    - 如果梯度的范数满足停止条件 $\|d^k\| \leq \delta$，则算法停止，当前点为最优解。
    - 否则，进行**线搜索**，确定步长 $\lambda_k>0$，使得：
+
      $$f(x^k + \lambda_k d^k) = \min_{\lambda > 0} f(x^k + \lambda d^k)$$
    - 更新当前点：
+
      $$x^{k+1} = x^k + \lambda_k d^k$$
 
 #### 牛顿法
