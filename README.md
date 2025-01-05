@@ -40,7 +40,12 @@ $$\arg \min_{\lambda > 0} f \left( x^{(k)} + \lambda d^{(k)} \right)$$
 #### 牛顿法
 ##### 基本思想
 牛顿法（经典牛顿法）利用二阶泰勒展开式对目标函数进行近似，因此会用到一阶导数（梯度）和二阶导数（黑塞矩阵）。牛顿法将近似得到二阶函数的极小值点作为原函数极小值点的近似，并不断重复这一近似的过程，直至得到满足精度要求的极小值点。牛顿法收敛速度非常快，不会随着问题维度的增大而大幅增加所需的迭代次数，且不需要通过线搜确定迭代更新的步长。
-$$f(x) \approx f\left(x^{(k)}\right) + \nabla f(x^{(k)}) \left(x - x^{(k)}\right) + \frac{1}{2} \nabla^2 f(x^{(k)}) \left(x - x^{(k)}\right)^2$$ $$f'(x) = \nabla f(x^{(k)}) + \nabla^2 f(x^{(k)}) \left(x - x^{(k)}\right) = 0$$ $$x^{(k+1)} = x^{(k)} - \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
+
+$$f(x) \approx f\left(x^{(k)}\right) + \nabla f(x^{(k)}) \left(x - x^{(k)}\right) + \frac{1}{2} \nabla^2 f(x^{(k)}) \left(x - x^{(k)}\right)^2$$ 
+
+$$f'(x) = \nabla f(x^{(k)}) + \nabla^2 f(x^{(k)}) \left(x - x^{(k)}\right) = 0$$ 
+
+$$x^{(k+1)} = x^{(k)} - \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
 
 ##### 算法流程
 1. **初始化**：
@@ -105,12 +110,13 @@ $$x^{(k+1)} = x^{(k)} - \lambda_k \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
     - 计算新的梯度 $g_{k+1} = \nabla f(x^{k+1})$。
     - 如果梯度的范数 $\| g_{k+1} \| \leq \delta$，则停止迭代，并将当前点设为最优解 $x^* = x^{k+1}$。
     - 计算差分向量： $$s_k = x^{k+1} - x^k, \quad y_k = g_{k+1} - g_k$$
-    - 使用DFP公式或BFGS公式更新矩阵 $B_{k+1}$： $$B_{k+1} = B_k - \frac{B_k y_k y_k^T B_k}{y_k^T B_k y_k} + \frac{s_k s_k^T}{y_k^T s_k} \quad (\text{DFP})$$ 
-    $$\begin{aligned}
-    B_{k+1} &= B_k - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k} + \frac{y_k y_k^T}{y_k^T s_k} \\
-    &=(I_n - \frac{s_k y_k^T}{s_k^T y_k}) B_k (I_n - \frac{y_k s_k^T}{s_k^T y_k}) + \frac{s_k y_k^T}{s_k^T y_k} \quad (\text{BFGS})
-    \end{aligned}$$
-    - 更新迭代计数器 $ k = k + 1 $，并返回到第一步继续迭代。
+    - 使用DFP公式或BFGS公式更新矩阵 $B_{k+1}$：
+    
+       $$B_{k+1} = B_k - \frac{B_k y_k y_k^T B_k}{y_k^T B_k y_k} + \frac{s_k s_k^T}{y_k^T s_k} \quad (\text{DFP})$$
+   
+       $$B_{k+1} = B_k - \frac{B_k s_k s_k^T B_k}{s_k^T B_k s_k} + \frac{y_k y_k^T}{y_k^T s_k}  \quad (\text{BFGS})$$
+   
+    - 更新迭代计数器 $k = k + 1$，并返回到第一步继续迭代。
 
 ### Matlab 仿真程序
 见附件test.m
@@ -118,18 +124,24 @@ $$x^{(k+1)} = x^{(k)} - \lambda_k \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
 ### 算法结果和对比分析
 #### 实验设置
 
-测试函数： $$f(x_1,x_2) = (x_1 + x_2)^2 + (x_1 + 1)^2 + (x_2 + 3)^2$$
+测试函数： 
+
+$$f(x_1,x_2) = (x_1 + x_2)^2 + (x_1 + 1)^2 + (x_2 + 3)^2$$
+
 ![alt text](/image/fun1.png)
+
 最小点： $x^* = [\frac{1}{3}, - \frac{5}{3}]$，最小值： $f(x^*) = \frac{16}{3}.$
 初值设为 $[-1,-1]$ ，精度设置为 $10^{-6}$ ，最大迭代次数为 10000 ，画出等高线及迭代点搜索过程图来进行观察。
 #### 结果与分析
 
 运行结果：
+
 ![alt text](/image/all_1.png)
 
 牛顿法和改进的牛顿法在数值精度上表现最好，其次是F-R 共轭梯度法和拟牛顿法（BFGS），最后是拟牛顿法（DFP）和最速下降法。牛顿法的解析性质使其能快速且精确地找到最优解，特别是在目标函数是二次型或近似二次型的情况下。
 
 各个算法的等高线图
+
 ![alt text](/image/all_7.png)
 
 - **最速下降法**：经过 22 次迭代，算法终止。从图中可以观察到，最速下降法的路径是“锯齿状”的。算法在每一步都沿着梯度的方向前进，但由于目标函数的狭长谷底形状，导致频繁偏离目标点（局部最优路径），进而需要较多迭代才能收敛。
@@ -139,6 +151,7 @@ $$x^{(k+1)} = x^{(k)} - \lambda_k \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
 - **拟牛顿法**：从结果可以看出，使用 BFGS 公式的拟牛顿法仅需两步即可收敛到最小值，而使用 DFP 公式的拟牛顿法则需要 16 步才能收敛。这一点说明了不同的更新公式对拟牛顿法的收敛速度是不同的，在这个例子中 BFGS 明显比 DFP 更优。BFGS 路径与共轭梯度法类似，BFGS 能通过逐步更新近似的 Hessian 矩阵实现快速收敛。DFP 路径明显比其他方法更曲折，需要多次迭代才能收敛，表明其更新规则在某些情况下的效率不如 BFGS。
 
 等高线对比图
+
 ![alt text](/image/all_2.png)
 
 最速下降法的路径与等高线的方向多次交叉，说明其搜索效率低下。
@@ -152,6 +165,7 @@ $$x^{(k+1)} = x^{(k)} - \lambda_k \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
 ##### 进一步性能对比
 将迭代次数固定为 10 次，对比精度和收敛速度。
 运行结果如下：
+
 ![alt text](/image/all_4.png)
 ![alt text](/image/all_3.png)
 
@@ -189,6 +203,7 @@ $$x^{(k+1)} = x^{(k)} - \lambda_k \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
 
 ##### 更换测试函数进行对比
 采用 2 阶 Rastrigin 函数进行稳定性测试，函数表达式和三维图像如下：
+
 $$f(x_1,x_2) = 20 + x_1^2 + x_2^2 - 10 \cos(2 \pi x_1) - 10 \cos(2 \pi x_2)$$
 
 ![alt text](/image/fun2.png)
