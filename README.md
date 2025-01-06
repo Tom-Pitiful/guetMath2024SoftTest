@@ -76,7 +76,7 @@ $$x^{(k+1)} = x^{(k)} - \lambda_k \nabla^2 f(x^{(k)}) ^ {-1}\nabla f(x^{(k)})$$
     - 若 $\| g_k \| \leq \delta$，停止迭代，当前点即为最优解 $x^* = x^k$。
     - 计算 Hessian 矩阵 $H_k = \nabla^2 f(x^k)$。
     - 确定下降方向： $d^k = - H_k^{-1} g_k$
-    - 线搜索找到步长$\lambda_k > 0$： $$f(x^k + \lambda_k d^k) = \min_{\lambda > 0} f(x^k + \lambda d^k)$$
+    - 线搜索找到步长$\lambda_k>0$： $$f(x^k + \lambda_k d^k) = \min_{\lambda > 0} f(x^k + \lambda d^k)$$
     - 更新迭代点 $$x^{k+1} = x^k + \lambda_k d_k$$
     - 迭代次数 $k$ 加 1 ，回第一步重新计算梯度。
 
